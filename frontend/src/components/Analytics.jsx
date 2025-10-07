@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { CalendarIcon, Filter, X } from 'lucide-react';
 import analyticsService from '../services/analyticsService';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import './Analytics.css';
@@ -12,6 +13,14 @@ const Analytics = () => {
   const [expenseCategories, setExpenseCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  // Timeline filter state
+  const [dateFilter, setDateFilter] = useState({
+    type: 'all', // 'all', 'current_month', 'last_month', 'custom'
+    startDate: '',
+    endDate: '',
+    label: 'All Time'
+  });
   
   // Retry logic state
   const [retryAttempts, setRetryAttempts] = useState(0);
@@ -34,6 +43,86 @@ const Analytics = () => {
   // Colors for pie charts
   const COLORS = ['#ec4899', '#be185d', '#881337', '#f472b6', '#fbbf24', '#fb7185', '#a855f7', '#06b6d4'];
 
+  // Helper function to get date ranges
+  const getDateRange = (type) => {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    
+    switch (type) {
+      case 'current_month':
+        return {
+          startDate: new Date(currentYear, currentMonth, 1).toISOString().split('T')[0],
+          endDate: new Date(currentYear, currentMonth + 1, 0).toISOString().split('T')[0],
+          label: 'Current Month'
+        };
+      case 'last_month':
+        const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+        const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+        return {
+          startDate: new Date(lastMonthYear, lastMonth, 1).toISOString().split('T')[0],
+          endDate: new Date(lastMonthYear, lastMonth + 1, 0).toISOString().split('T')[0],
+          label: 'Last Month'
+        };
+      case 'custom':
+        return {
+          startDate: dateFilter.startDate,
+          endDate: dateFilter.endDate,
+          label: 'Custom Range'
+        };
+      default:
+        return {
+          startDate: null,
+          endDate: null,
+          label: 'All Time'
+        };
+    }
+  };
+
+  // Handle filter change
+  const handleFilterChange = (filterType, customStart = '', customEnd = '') => {
+    let newFilter;
+    
+    if (filterType === 'custom') {
+      newFilter = {
+        type: 'custom',
+        startDate: customStart,
+        endDate: customEnd,
+        label: 'Custom Range'
+      };
+    } else {
+      const dateRange = getDateRange(filterType);
+      newFilter = {
+        type: filterType,
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+        label: dateRange.label
+      };
+    }
+    
+    setDateFilter(newFilter);
+    
+    // Debounce the API call to prevent too many requests
+    if (fetchTimeoutRef.current) {
+      clearTimeout(fetchTimeoutRef.current);
+    }
+    
+    fetchTimeoutRef.current = setTimeout(() => {
+      fetchAnalyticsData(false, newFilter.startDate, newFilter.endDate);
+    }, 300);
+  };
+
+  // Clear filters
+  const clearFilters = () => {
+    setDateFilter({
+      type: 'all',
+      startDate: '',
+      endDate: '',
+      label: 'All Time'
+    });
+    fetchAnalyticsData(false, null, null);
+  };
+
   // Manual retry function
   const handleManualRetry = () => {
     if (isBlocked || isFetching) {
@@ -44,11 +133,11 @@ const Analytics = () => {
     console.log('Manual retry initiated');
     setRetryAttempts(0);
     setError('');
-    fetchAnalyticsData(true);
+    fetchAnalyticsData(true, dateFilter.startDate, dateFilter.endDate);
   };
 
   // Fetch analytics data with retry logic
-  const fetchAnalyticsData = async (isRetry = false) => {
+  const fetchAnalyticsData = async (isRetry = false, startDate = null, endDate = null) => {
     // Prevent multiple simultaneous calls
     if (isFetching && !isRetry) {
       console.log('API call already in progress, skipping...');
@@ -66,27 +155,27 @@ const Analytics = () => {
       setLoading(true);
       setError('');
       
-      console.log('Fetching analytics data...');
+      console.log('Fetching analytics data with date filter:', { startDate, endDate });
       console.log('Retry attempts:', retryAttempts);
       
       // Fetch balance overview
-      const balanceResponse = await analyticsService.getBalanceOverview();
+      const balanceResponse = await analyticsService.getBalanceOverview(startDate, endDate);
       console.log('Balance data received:', balanceResponse);
       
       // Fetch total income
-      const totalIncomeResponse = await analyticsService.getTotalIncome();
+      const totalIncomeResponse = await analyticsService.getTotalIncome(startDate, endDate);
       console.log('Total income data received:', totalIncomeResponse);
       
       // Fetch total expenses
-      const totalExpenseResponse = await analyticsService.getTotalExpenses();
+      const totalExpenseResponse = await analyticsService.getTotalExpenses(startDate, endDate);
       console.log('Total expense data received:', totalExpenseResponse);
       
       // Fetch income categories
-      const incomeResponse = await analyticsService.getCategoryAnalytics('income');
+      const incomeResponse = await analyticsService.getCategoryAnalytics('income', startDate, endDate);
       console.log('Income categories received:', incomeResponse);
       
       // Fetch expense categories  
-      const expenseResponse = await analyticsService.getCategoryAnalytics('expense');
+      const expenseResponse = await analyticsService.getCategoryAnalytics('expense', startDate, endDate);
       console.log('Expense categories received:', expenseResponse);
       
       setBalanceData(balanceResponse.data?.balance || {});
@@ -209,6 +298,91 @@ const Analytics = () => {
       <div className="analytics-header">
         <h2>📊 Financial Analytics</h2>
         <p>Track your income, expenses, and financial health</p>
+      </div>
+
+      {/* Timeline Filter Section */}
+      <div className="filter-section">
+        <div className="filter-header">
+          <Filter size={20} />
+          <h3>Timeline Filter</h3>
+          <span className="current-filter">({dateFilter.label})</span>
+        </div>
+        
+        <div className="filter-controls">
+          <div className="filter-buttons">
+            <button
+              onClick={() => handleFilterChange('all')}
+              className={`filter-btn ${dateFilter.type === 'all' ? 'active' : ''}`}
+            >
+              All Time
+            </button>
+            <button
+              onClick={() => handleFilterChange('current_month')}
+              className={`filter-btn ${dateFilter.type === 'current_month' ? 'active' : ''}`}
+            >
+              Current Month
+            </button>
+            <button
+              onClick={() => handleFilterChange('last_month')}
+              className={`filter-btn ${dateFilter.type === 'last_month' ? 'active' : ''}`}
+            >
+              Last Month
+            </button>
+            <button
+              onClick={() => handleFilterChange('custom')}
+              className={`filter-btn ${dateFilter.type === 'custom' ? 'active' : ''}`}
+            >
+              Custom Range
+            </button>
+          </div>
+          
+          {dateFilter.type === 'custom' && (
+            <div className="custom-date-range">
+              <div className="date-input-group">
+                <label>From:</label>
+                <div className="date-input-container">
+                  <input
+                    type="date"
+                    value={dateFilter.startDate}
+                    onChange={(e) => {
+                      const newStartDate = e.target.value;
+                      setDateFilter(prev => ({ ...prev, startDate: newStartDate }));
+                      if (newStartDate && dateFilter.endDate) {
+                        handleFilterChange('custom', newStartDate, dateFilter.endDate);
+                      }
+                    }}
+                    className="date-input"
+                  />
+                  <CalendarIcon className="calendar-icon" size={16} />
+                </div>
+              </div>
+              
+              <div className="date-input-group">
+                <label>To:</label>
+                <div className="date-input-container">
+                  <input
+                    type="date"
+                    value={dateFilter.endDate}
+                    onChange={(e) => {
+                      const newEndDate = e.target.value;
+                      setDateFilter(prev => ({ ...prev, endDate: newEndDate }));
+                      if (dateFilter.startDate && newEndDate) {
+                        handleFilterChange('custom', dateFilter.startDate, newEndDate);
+                      }
+                    }}
+                    className="date-input"
+                  />
+                  <CalendarIcon className="calendar-icon" size={16} />
+                </div>
+              </div>
+              
+              <button onClick={clearFilters} className="clear-filter-btn">
+                <X size={16} />
+                Clear
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {loading ? (
