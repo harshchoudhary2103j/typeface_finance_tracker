@@ -3,15 +3,29 @@
   height: 100vh;
   width: 100vw;
   display: flex;
-  align-items: center;
-  justify-content: center;
   background: linear-gradient(135deg, #ffeef0 0%, #ffe1e6 25%, #fecdd3 50%, #fda4af 100%);
-  padding: 40px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   position: relative;
   overflow: hidden;
   margin: 0;
+  padding: 0;
   box-sizing: border-box;
+}
+
+.auth-brand {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 20;
+  color: #881337;
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #881337 0%, #be185d 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 4px rgba(136, 19, 55, 0.1);
+  letter-spacing: -0.5px;
 }
 
 .auth-container::before {
@@ -41,20 +55,103 @@
   50% { transform: translateY(-20px) rotate(5deg); }
 }
 
+.auth-quote-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  position: relative;
+  z-index: 5;
+  overflow-y: auto;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.auth-quote-section::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.auth-quote-content {
+  text-align: center;
+  max-width: 450px;
+}
+
+.auth-quote-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+  display: block;
+  animation: bounce 3s ease-in-out infinite;
+}
+
+.auth-quote-title {
+  color: #881337;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #881337 0%, #be185d 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.auth-quote-text {
+  color: #9f1239;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.auth-quote-author {
+  color: #be185d;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.auth-form-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  z-index: 10;
+  overflow-y: auto;
+  max-height: 100vh;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.auth-form-section::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
 .auth-card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-radius: 32px;
-  box-shadow: 0 25px 50px rgba(244, 63, 94, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.3);
-  padding: 60px 80px;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(244, 63, 94, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.3);
+  padding: 30px;
   width: 100%;
-  max-width: 600px;
-  min-width: 500px;
+  max-width: 380px;
   animation: slideUp 0.6s ease-out;
   border: 1px solid rgba(251, 113, 133, 0.1);
-  position: relative;
-  z-index: 10;
-  margin: 0 auto;
+  margin: auto 0;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.auth-card::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
 @keyframes slideUp {
@@ -79,15 +176,15 @@
 
 .auth-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 20px;
   position: relative;
 }
 
 .auth-header::before {
   content: '💰';
-  font-size: 56px;
+  font-size: 30px;
   display: block;
-  margin-bottom: 24px;
+  margin-bottom: 10px;
   animation: bounce 2s ease-in-out infinite;
 }
 
@@ -105,9 +202,9 @@
 
 .auth-header h2 {
   color: #881337;
-  font-size: 40px;
+  font-size: 20px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 6px;
   letter-spacing: -0.5px;
   background: linear-gradient(135deg, #881337 0%, #be185d 50%, #ec4899 100%);
   -webkit-background-clip: text;
@@ -117,7 +214,7 @@
 
 .auth-header p {
   color: #9f1239;
-  font-size: 18px;
+  font-size: 12px;
   margin: 0;
   font-weight: 500;
 }
@@ -125,12 +222,12 @@
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 16px;
 }
 
 .form-row {
   display: flex;
-  gap: 24px;
+  gap: 12px;
 }
 
 .form-row .form-group {
@@ -144,48 +241,48 @@
 
 .form-group label {
   color: #881337;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   display: block;
 }
 
 .form-group input {
-  padding: 20px 24px;
+  padding: 10px 14px;
   border: 2px solid #fecdd3;
-  border-radius: 20px;
-  font-size: 18px;
+  border-radius: 10px;
+  font-size: 13px;
   transition: all 0.3s ease;
   background-color: #fef7f7;
   color: #881337;
   width: 100%;
   box-sizing: border-box;
-  min-height: 60px;
+  height: 36px;
 }
 
 .form-group input:focus {
   outline: none;
   border-color: #ec4899;
   background-color: #ffffff;
-  box-shadow: 0 0 0 6px rgba(236, 72, 153, 0.1);
-  transform: translateY(-2px);
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+  transform: translateY(-1px);
 }
 
 .form-group input::placeholder {
   color: #f472b6;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .error-message {
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
   border: 1px solid #fca5a5;
   color: #dc2626;
-  padding: 20px 24px;
-  border-radius: 20px;
-  font-size: 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 12px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   font-weight: 500;
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
 }
@@ -194,18 +291,18 @@
   background: linear-gradient(135deg, #ec4899 0%, #be185d 50%, #881337 100%);
   color: #ffffff;
   border: none;
-  padding: 22px 32px;
-  border-radius: 20px;
-  font-size: 18px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 24px;
+  margin-top: 16px;
   width: 100%;
-  box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.3);
   position: relative;
   overflow: hidden;
-  min-height: 64px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -241,8 +338,8 @@
 
 .auth-footer {
   text-align: center;
-  margin-top: 40px;
-  padding-top: 32px;
+  margin-top: 16px;
+  padding-top: 16px;
   border-top: 1px solid #fecdd3;
   position: relative;
 }
@@ -250,19 +347,19 @@
 .auth-footer::before {
   content: '📊 Track • 💰 Save • 📈 Grow';
   position: absolute;
-  top: -16px;
+  top: -12px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(255, 255, 255, 0.9);
-  padding: 0 20px;
-  font-size: 14px;
+  padding: 0 16px;
+  font-size: 11px;
   color: #be185d;
   font-weight: 600;
 }
 
 .auth-footer p {
   color: #9f1239;
-  font-size: 17px;
+  font-size: 12px;
   margin: 0;
   font-weight: 500;
 }
@@ -295,98 +392,114 @@
   width: 100%;
 }
 
-/* Desktop optimized design */
-@media (min-width: 1200px) {
-  .auth-container {
-    padding: 60px;
-  }
-  
-  .auth-card {
-    padding: 80px 100px;
-    max-width: 700px;
-    min-width: 600px;
-  }
-  
-  .auth-header h2 {
-    font-size: 48px;
-  }
-  
-  .form-group input {
-    padding: 24px 28px;
-    font-size: 20px;
-    min-height: 68px;
-  }
-  
-  .auth-button {
-    padding: 24px 36px;
-    font-size: 20px;
-    min-height: 72px;
-  }
-}
-
-/* Large desktop screens */
-@media (min-width: 1440px) {
-  .auth-container {
-    padding: 80px;
-  }
-  
-  .auth-card {
-    padding: 100px 120px;
-    max-width: 800px;
-    min-width: 700px;
-  }
-}
-
-/* Tablet design */
-@media (max-width: 1199px) and (min-width: 769px) {
-  .auth-container {
-    padding: 40px;
-  }
-  
-  .auth-card {
-    padding: 50px 60px;
-    max-width: 550px;
-    min-width: 450px;
-  }
-}
-
 /* Mobile design */
 @media (max-width: 768px) {
+  .auth-brand {
+    top: 15px;
+    left: 15px;
+    font-size: 16px;
+  }
+  
   .auth-container {
-    padding: 20px;
+    flex-direction: column;
     height: auto;
     min-height: 100vh;
   }
   
+  .auth-quote-section {
+    flex: none;
+    padding: 30px 20px;
+    min-height: 300px;
+  }
+  
+  .auth-quote-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+  }
+  
+  .auth-quote-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  
+  .auth-quote-text {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .auth-form-section {
+    flex: none;
+    padding: 15px;
+    overflow-y: auto;
+    max-height: 100vh;
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+  
+  .auth-form-section::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+  
   .auth-card {
-    padding: 40px 30px;
-    min-width: auto;
+    padding: 25px 15px;
     max-width: 100%;
-    margin: 20px 0;
+    margin: 0;
+    max-height: calc(100vh - 30px);
+    overflow-y: auto;
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+  
+  .auth-card::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
   }
   
   .form-row {
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
   }
   
   .auth-header h2 {
-    font-size: 28px;
+    font-size: 18px;
   }
   
   .auth-header::before {
-    font-size: 40px;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  
+  .auth-header {
+    margin-bottom: 16px;
+  }
+  
+  .auth-form {
+    gap: 12px;
   }
   
   .form-group input {
-    padding: 16px 20px;
-    font-size: 16px;
-    min-height: 56px;
+    height: 32px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .form-group label {
+    font-size: 11px;
+    margin-bottom: 4px;
   }
   
   .auth-button {
-    padding: 18px 24px;
-    font-size: 16px;
-    min-height: 56px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .auth-footer {
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+  
+  .auth-footer p {
+    font-size: 11px;
   }
 }
