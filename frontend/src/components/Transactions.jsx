@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Calendar, CalendarIcon } from 'lucide-react';
 import transactionService from '../services/transactionService';
 import './Transactions.css';
 
@@ -251,23 +252,29 @@ const Transactions = () => {
             <option value="other">Other</option>
           </select>
 
-          <input
-            type="date"
-            name="startDate"
-            value={filters.startDate}
-            onChange={handleFilterChange}
-            className="filter-input"
-            placeholder="Start Date"
-          />
+          <div className="date-input-container">
+            <input
+              type="date"
+              name="startDate"
+              value={filters.startDate}
+              onChange={handleFilterChange}
+              className="filter-input date-input"
+              placeholder="Start Date"
+            />
+            <CalendarIcon className="calendar-icon" size={16} />
+          </div>
 
-          <input
-            type="date"
-            name="endDate"
-            value={filters.endDate}
-            onChange={handleFilterChange}
-            className="filter-input"
-            placeholder="End Date"
-          />
+          <div className="date-input-container">
+            <input
+              type="date"
+              name="endDate"
+              value={filters.endDate}
+              onChange={handleFilterChange}
+              className="filter-input date-input"
+              placeholder="End Date"
+            />
+            <CalendarIcon className="calendar-icon" size={16} />
+          </div>
 
           <button onClick={applyFilters} className="filter-btn apply-btn">
             Apply Filters
@@ -464,13 +471,17 @@ const Transactions = () => {
 
               <div className="form-group">
                 <label>Date:</label>
-                <input
-                  type="date"
-                  name="date"
-                  value={editForm.date}
-                  onChange={handleEditFormChange}
-                  required
-                />
+                <div className="date-input-container">
+                  <input
+                    type="date"
+                    name="date"
+                    value={editForm.date}
+                    onChange={handleEditFormChange}
+                    required
+                    className="date-input"
+                  />
+                  <CalendarIcon className="calendar-icon" size={16} />
+                </div>
               </div>
 
               <div className="modal-actions">
