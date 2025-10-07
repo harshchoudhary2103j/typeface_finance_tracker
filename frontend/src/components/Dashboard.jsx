@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Analytics from './Analytics';
 import Transactions from './Transactions';
 import AddTransaction from './AddTransaction';
+import AddStatement from './AddStatement';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -120,6 +121,12 @@ const Dashboard = () => {
             >
               ➕ Add Transaction
             </button>
+            <button 
+              className={`tab-button ${activeTab === 'add-statement' ? 'active' : ''}`}
+              onClick={() => setActiveTab('add-statement')}
+            >
+              📄 Upload Statement
+            </button>
           </div>
 
           {/* Tab Content */}
@@ -138,6 +145,12 @@ const Dashboard = () => {
           {activeTab === 'add-transaction' && (
             <div className="tab-content">
               <AddTransaction />
+            </div>
+          )}
+
+          {activeTab === 'add-statement' && (
+            <div className="tab-content">
+              <AddStatement />
             </div>
           )}
         </div>
