@@ -77,6 +77,48 @@ const analyticsService = {
       console.error('Error fetching subclass options:', error);
       throw error;
     }
+  },
+
+  // Get total income
+  getTotalIncome: async (startDate = null, endDate = null) => {
+    try {
+      const params = new URLSearchParams();
+      if (startDate) params.append('startDate', startDate);
+      if (endDate) params.append('endDate', endDate);
+      
+      const queryString = params.toString();
+      const url = `/expense-tracker/analytics/income${queryString ? `?${queryString}` : ''}`;
+      
+      console.log('Calling total income API:', url);
+      const response = await api.get(url);
+      console.log('Total income API response:', response.data);
+      
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching total income:', error);
+      throw error;
+    }
+  },
+
+  // Get total expenses
+  getTotalExpenses: async (startDate = null, endDate = null) => {
+    try {
+      const params = new URLSearchParams();
+      if (startDate) params.append('startDate', startDate);
+      if (endDate) params.append('endDate', endDate);
+      
+      const queryString = params.toString();
+      const url = `/expense-tracker/analytics/expenses${queryString ? `?${queryString}` : ''}`;
+      
+      console.log('Calling total expenses API:', url);
+      const response = await api.get(url);
+      console.log('Total expenses API response:', response.data);
+      
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching total expenses:', error);
+      throw error;
+    }
   }
 };
 

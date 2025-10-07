@@ -15,6 +15,8 @@ const Dashboard = () => {
   
   // Analytics data state
   const [balanceData, setBalanceData] = useState(null);
+  const [totalIncomeData, setTotalIncomeData] = useState(null);
+  const [totalExpenseData, setTotalExpenseData] = useState(null);
   const [incomeCategories, setIncomeCategories] = useState([]);
   const [expenseCategories, setExpenseCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -112,6 +114,14 @@ const Dashboard = () => {
       const balanceResponse = await analyticsService.getBalanceOverview();
       console.log('Balance data received:', balanceResponse);
       
+      // Fetch total income
+      const totalIncomeResponse = await analyticsService.getTotalIncome();
+      console.log('Total income data received:', totalIncomeResponse);
+      
+      // Fetch total expenses
+      const totalExpenseResponse = await analyticsService.getTotalExpenses();
+      console.log('Total expense data received:', totalExpenseResponse);
+      
       // Fetch income categories
       const incomeResponse = await analyticsService.getCategoryAnalytics('income');
       console.log('Income categories received:', incomeResponse);
@@ -121,6 +131,8 @@ const Dashboard = () => {
       console.log('Expense categories received:', expenseResponse);
       
       setBalanceData(balanceResponse.data?.balance || {});
+      setTotalIncomeData(totalIncomeResponse.data || {});
+      setTotalExpenseData(totalExpenseResponse.data || {});
       setIncomeCategories(incomeResponse.data?.categories || []);
       setExpenseCategories(expenseResponse.data?.categories || []);
       
@@ -229,6 +241,14 @@ const Dashboard = () => {
       }
     };
   }, [user]); // Only depend on user, not on isBlocked or other changing states
+
+  // Refresh analytics data when switching to analytics tab
+  useEffect(() => {
+    if (activeTab === 'analytics' && hasInitiallyFetched && !isFetching && !isBlocked) {
+      console.log('Refreshing analytics data due to tab switch');
+      fetchAnalyticsData();
+    }
+  }, [activeTab]);
 
   return (
     <div className="dashboard-container">
@@ -347,11 +367,11 @@ const Dashboard = () => {
                     <h3>Total Income</h3>
                   </div>
                   <div className="widget-value">
-                    ${balanceData?.totalIncome?.toFixed(2) || '0.00'}
+                    ${totalIncomeData?.totalIncome?.toFixed(2) || '0.00'}
                   </div>
                   <div className="widget-details">
                     <span className="transaction-count">
-                      {balanceData?.incomeTransactions || 0} transactions
+                      {totalIncomeData?.incomeTransactions || 0} transactions
                     </span>
                   </div>
                 </div>
@@ -404,11 +424,11 @@ const Dashboard = () => {
                     <h3>Total Expenses</h3>
                   </div>
                   <div className="widget-value">
-                    ${balanceData?.totalExpense?.toFixed(2) || '0.00'}
+                    ${totalExpenseData?.totalExpense?.toFixed(2) || '0.00'}
                   </div>
                   <div className="widget-details">
                     <span className="transaction-count">
-                      {balanceData?.expenseTransactions || 0} transactions
+                      {totalExpenseData?.expenseTransactions || 0} transactions
                     </span>
                   </div>
                 </div>
