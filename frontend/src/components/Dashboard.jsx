@@ -4,6 +4,7 @@ import analyticsService from '../services/analyticsService';
 import { useNavigate } from 'react-router-dom';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import Transactions from './Transactions';
+import AddTransaction from './AddTransaction';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -300,6 +301,12 @@ const Dashboard = () => {
             >
               💳 Transactions
             </button>
+            <button 
+              className={`tab-button ${activeTab === 'add-transaction' ? 'active' : ''}`}
+              onClick={() => setActiveTab('add-transaction')}
+            >
+              ➕ Add Transaction
+            </button>
           </div>
 
           {/* Tab Content */}
@@ -455,6 +462,12 @@ const Dashboard = () => {
           {activeTab === 'transactions' && (
             <div className="tab-content">
               <Transactions />
+            </div>
+          )}
+
+          {activeTab === 'add-transaction' && (
+            <div className="tab-content">
+              <AddTransaction />
             </div>
           )}
         </div>
