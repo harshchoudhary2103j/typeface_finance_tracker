@@ -259,7 +259,7 @@
 
 .dashboard-widgets {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   margin-top: 32px;
 }
@@ -272,6 +272,9 @@
   box-shadow: 0 8px 25px rgba(244, 63, 94, 0.08);
   text-align: center;
   transition: all 0.3s ease;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
 }
 
 .widget:hover {
@@ -292,6 +295,194 @@
   color: #9f1239;
   margin: 0;
   font-weight: 500;
+}
+
+/* Widget Header */
+.widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.widget-icon {
+  font-size: 24px;
+}
+
+/* Widget Value */
+.widget-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #881337;
+  background: linear-gradient(135deg, #881337 0%, #be185d 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+
+.widget-details {
+  font-size: 13px;
+  color: #9f1239;
+  margin-top: auto;
+}
+
+.transaction-count {
+  background: rgba(251, 113, 133, 0.1);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Specific Card Types */
+.income-card {
+  border-color: rgba(34, 197, 94, 0.3);
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.income-card .widget-value {
+  color: #166534;
+  background: linear-gradient(135deg, #166534 0%, #15803d 50%, #22c55e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.income-card h3 {
+  color: #166534;
+}
+
+.expense-card {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+}
+
+.expense-card .widget-value {
+  color: #dc2626;
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.expense-card h3 {
+  color: #dc2626;
+}
+
+/* Chart Container */
+.chart-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #9f1239;
+  font-style: italic;
+}
+
+/* Loading States */
+.loading-container {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+  border-radius: 16px;
+  border: 2px solid rgba(251, 113, 133, 0.15);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #fce7f3;
+  border-top: 4px solid #ec4899;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: #9f1239;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Error States */
+.error-container {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-radius: 16px;
+  border: 2px solid rgba(239, 68, 68, 0.2);
+}
+
+.error-message {
+  color: #dc2626;
+  font-size: 16px;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.countdown-message {
+  color: #7c3aed;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 8px 0;
+  text-align: center;
+  background: rgba(139, 92, 246, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.blocked-message {
+  color: #f59e0b;
+  font-size: 14px;
+  margin: 8px 0 0 0;
+  text-align: center;
+  font-style: italic;
+}
+
+.retry-button {
+  background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.retry-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.retry-button:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.3);
 }
 
 /* Mobile Responsiveness */
@@ -335,12 +526,45 @@
   }
   
   .dashboard-widgets {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
   
   .widget {
     padding: 20px;
+    min-height: 240px;
+  }
+  
+  .widget-value {
+    font-size: 24px;
+  }
+  
+  .chart-container {
+    min-height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-widgets {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .widget {
+    padding: 16px;
+    min-height: 200px;
+  }
+  
+  .widget-value {
+    font-size: 20px;
+  }
+  
+  .widget-header h3 {
+    font-size: 16px;
+  }
+  
+  .chart-container {
+    min-height: 140px;
   }
 }
 
@@ -358,5 +582,88 @@
   
   .dashboard-title {
     font-size: 20px;
+  }
+}
+
+/* Dashboard Tabs Styles */
+.dashboard-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 24px 0;
+  border-bottom: 1px solid rgba(251, 113, 133, 0.2);
+}
+
+.tab-button {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #6b7280;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+}
+
+.tab-button:hover {
+  background: rgba(251, 113, 133, 0.1);
+  color: #be185d;
+}
+
+.tab-button.active {
+  color: #be185d;
+  background: rgba(251, 113, 133, 0.1);
+  border-bottom-color: #be185d;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(135deg, #be185d 0%, #ec4899 100%);
+  border-radius: 2px 2px 0 0;
+}
+
+.tab-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive tabs */
+@media (max-width: 768px) {
+  .dashboard-tabs {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .tab-button {
+    text-align: left;
+    border-radius: 8px;
+    border-bottom: none;
+    padding: 16px 20px;
+  }
+  
+  .tab-button.active::after {
+    display: none;
+  }
+  
+  .tab-button.active {
+    background: rgba(251, 113, 133, 0.15);
+    border-left: 4px solid #be185d;
   }
 }
