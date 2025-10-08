@@ -190,4 +190,4 @@ Here are some screenshots showcasing the application's features:
 ![Upload Statement](docs/images/Upload+Statement.png)
 
 **Demo Video Link**
-https://www.loom.com/share/472701b88edd4ea49ebd3f8281bf11e6?sid=d6e41f70-ce0e-47ae-8b58-0c8cce805720
+![Upload Video](https://www.loom.com/share/472701b88edd4ea49ebd3f8281bf11e6?sid=d6e41f70-ce0e-47ae-8b58-0c8cce805720)
