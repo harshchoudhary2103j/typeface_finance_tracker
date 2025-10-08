@@ -189,5 +189,12 @@ Here are some screenshots showcasing the application's features:
 **Bank Statement Upload**
 ![Upload Statement](docs/images/Upload+Statement.png)
 
-**Demo Video Link**
-![Upload Video](https://www.loom.com/share/472701b88edd4ea49ebd3f8281bf11e6?sid=d6e41f70-ce0e-47ae-8b58-0c8cce805720)
+## 🎥 Typhus Project Overview: Expense Tracker Application
+
+<a href="https://www.loom.com/share/472701b88edd4ea49ebd3f8281bf11e6" target="_blank">
+  <img src="https://cdn.loom.com/sessions/thumbnails/472701b88edd4ea49ebd3f8281bf11e6-6d2d5c4944182d26-full-play.gif" alt="Watch the video" width="400"/>
+</a>
+
+👉 Click the thumbnail above to watch the demo video on Loom.
+
+
